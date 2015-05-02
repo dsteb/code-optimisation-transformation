@@ -59,7 +59,7 @@ def factor(symtab) :
 def term(symtab) :
 	op=None
 	expr = factor(symtab)
-	while new_sym in [ 'times', 'slash'] :
+	while new_sym in [ 'times', 'slash', 'mod'] :
 		getsym()
 		op = sym
 		expr2 = factor(symtab)
@@ -113,7 +113,7 @@ def statement(symtab) :
 		while accept('semicolon') :
 			if (new_sym != 'endsym'):
 				statement_list.append(statement(symtab))
-			else: break	
+			else: break
 			
 		expect('endsym');
 		statement_list.print_content()
