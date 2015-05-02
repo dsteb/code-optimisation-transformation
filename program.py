@@ -9,11 +9,11 @@ BEGIN
 END;
  
 BEGIN
-   x := 1;
-   WHILE x <= 10 DO
-   BEGIN
-      CALL square;
-      x := x + 1 ;
-			!squ
-   END
+  x := 1;
+  WHILE x <= 10 DO
+  BEGIN
+     CALL square;
+     x := x + 1 ;
+	 !squ;
+  END
 END.'''

@@ -5,6 +5,9 @@ __doc__ = '''PL/0 recursive descent parser adapted from Wikipedia'''
 from ir import *
 from logger import logger
 
+import sys
+sys.stdout = open('log', 'w')
+
 symbols =  [ 'ident', 'number', 'lparen', 'rparen', 'times', 'slash', 'plus', 'minus', 'eql', 'neq', 'lss', 'leq', 'gtr', 'geq', 'callsym', 'beginsym', 'semicolon', 'endsym', 'ifsym', 'whilesym', 'becomes', 'thensym', 'dosym', 'constsym', 'comma', 'varsym', 'procsym', 'period', 'oddsym' ]
 
 sym = None
@@ -108,7 +111,10 @@ def statement(symtab) :
 		statement_list = StatList(symtab=symtab)
 		statement_list.append(statement(symtab))
 		while accept('semicolon') :
-			statement_list.append(statement(symtab))
+			if (new_sym != 'endsym'):
+				statement_list.append(statement(symtab))
+			else: break	
+			
 		expect('endsym');
 		statement_list.print_content()
 		return statement_list
@@ -124,7 +130,9 @@ def statement(symtab) :
 		return WhileStat(cond=cond, body=body, symtab=symtab)
 	elif accept('print') :
 		expect('ident')
-		return PrintStat(symbol=symtab.find(value),symtab=symtab)
+		val = value
+		expect('semicolon')
+		return PrintStat(symbol=symtab.find(val),symtab=symtab)
  
 @logger
 def block(symtab) :
@@ -195,7 +203,7 @@ if __name__ == '__main__' :
 		print type(n), id(n)
 		try :	n.flatten()
 		except Exception :	pass
-	#res.navigate(flattening)
+	res.navigate(flattening)
 	print '\n', res, '\n'
 
 	print_dotty(res,"log.dot")

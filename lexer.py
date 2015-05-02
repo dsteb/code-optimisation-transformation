@@ -32,7 +32,7 @@ symbols =  {
 	'procsym'   : ['procedure'], 
 	'period'    : ['.'], 
 	'oddsym'    : ['odd'],
-	'print'			: ['!', 'print'],
+	'print'		: ['!', 'print'],
 }
 
 def token(word):
