@@ -1,0 +1,641 @@
+start <function program at 0x2446b90>
+getsym: varsym var
+start <function block at 0x2446aa0>
+accepting constsym == varsym
+accepting varsym == varsym
+getsym: ident x
+expecting ident
+accepting ident == ident
+getsym: comma ,
+accepting comma == comma
+getsym: ident squ
+expecting ident
+accepting ident == ident
+getsym: semicolon ;
+accepting comma == semicolon
+expecting semicolon
+accepting semicolon == semicolon
+getsym: procsym procedure
+accepting procsym == procsym
+getsym: ident square
+expecting ident
+accepting ident == ident
+getsym: semicolon ;
+expecting semicolon
+accepting semicolon == semicolon
+getsym: beginsym begin
+start <function block at 0x2446aa0>
+accepting constsym == beginsym
+accepting varsym == beginsym
+accepting procsym == beginsym
+start <function statement at 0x24469b0>
+accepting ident == beginsym
+accepting callsym == beginsym
+accepting beginsym == beginsym
+getsym: ident squ
+StatList : new 38065168
+start <function statement at 0x24469b0>
+accepting ident == ident
+getsym: becomes :=
+Looking up squ
+expecting becomes
+accepting becomes == becomes
+getsym: ident x
+start <function expression at 0x24467d0>
+start <function term at 0x24466e0>
+start <function factor at 0x24465f0>
+accepting ident == ident
+getsym: times *
+Looking up x
+end <function factor at 0x24465f0>
+getsym: ident x
+start <function factor at 0x24465f0>
+accepting ident == ident
+getsym: endsym end
+Looking up x
+end <function factor at 0x24465f0>
+end <function term at 0x24466e0>
+end <function expression at 0x24467d0>
+end <function statement at 0x24469b0>
+StatList: appending 38066000 of type <class 'ir.AssignStat'> to 38065168
+accepting semicolon == endsym
+expecting endsym
+accepting endsym == endsym
+getsym: semicolon ;
+StatList 38065168 : [ 38066000 ]
+end <function statement at 0x24469b0>
+end <function block at 0x2446aa0>
+expecting semicolon
+accepting semicolon == semicolon
+getsym: beginsym begin
+Looking up square
+accepting procsym == beginsym
+start <function statement at 0x24469b0>
+accepting ident == beginsym
+accepting callsym == beginsym
+accepting beginsym == beginsym
+getsym: ident x
+StatList : new 38066192
+start <function statement at 0x24469b0>
+accepting ident == ident
+getsym: becomes :=
+Looking up x
+expecting becomes
+accepting becomes == becomes
+getsym: number 1
+start <function expression at 0x24467d0>
+start <function term at 0x24466e0>
+start <function factor at 0x24465f0>
+accepting ident == number
+accepting number == number
+getsym: semicolon ;
+end <function factor at 0x24465f0>
+end <function term at 0x24466e0>
+end <function expression at 0x24467d0>
+end <function statement at 0x24469b0>
+StatList: appending 38066320 of type <class 'ir.AssignStat'> to 38066192
+accepting semicolon == semicolon
+getsym: whilesym while
+start <function statement at 0x24469b0>
+accepting ident == whilesym
+accepting callsym == whilesym
+accepting beginsym == whilesym
+accepting ifsym == whilesym
+accepting whilesym == whilesym
+getsym: ident x
+start <function condition at 0x24468c0>
+accepting oddsym == ident
+start <function expression at 0x24467d0>
+start <function term at 0x24466e0>
+start <function factor at 0x24465f0>
+accepting ident == ident
+getsym: leq <=
+Looking up x
+end <function factor at 0x24465f0>
+end <function term at 0x24466e0>
+end <function expression at 0x24467d0>
+getsym: number 10
+condition operator leq number
+start <function expression at 0x24467d0>
+start <function term at 0x24466e0>
+start <function factor at 0x24465f0>
+accepting ident == number
+accepting number == number
+getsym: dosym do
+end <function factor at 0x24465f0>
+end <function term at 0x24466e0>
+end <function expression at 0x24467d0>
+end <function condition at 0x24468c0>
+expecting dosym
+accepting dosym == dosym
+getsym: beginsym begin
+start <function statement at 0x24469b0>
+accepting ident == beginsym
+accepting callsym == beginsym
+accepting beginsym == beginsym
+getsym: callsym call
+StatList : new 38066576
+start <function statement at 0x24469b0>
+accepting ident == callsym
+accepting callsym == callsym
+getsym: ident square
+expecting ident
+accepting ident == ident
+getsym: semicolon ;
+Looking up square
+end <function statement at 0x24469b0>
+StatList: appending 38066704 of type <class 'ir.CallStat'> to 38066576
+accepting semicolon == semicolon
+getsym: ident x
+start <function statement at 0x24469b0>
+accepting ident == ident
+getsym: becomes :=
+Looking up x
+expecting becomes
+accepting becomes == becomes
+getsym: ident x
+start <function expression at 0x24467d0>
+start <function term at 0x24466e0>
+start <function factor at 0x24465f0>
+accepting ident == ident
+getsym: plus +
+Looking up x
+end <function factor at 0x24465f0>
+end <function term at 0x24466e0>
+getsym: number 1
+start <function term at 0x24466e0>
+start <function factor at 0x24465f0>
+accepting ident == number
+accepting number == number
+getsym: semicolon ;
+end <function factor at 0x24465f0>
+end <function term at 0x24466e0>
+end <function expression at 0x24467d0>
+end <function statement at 0x24469b0>
+StatList: appending 38067088 of type <class 'ir.AssignStat'> to 38066576
+accepting semicolon == semicolon
+getsym: print !
+start <function statement at 0x24469b0>
+accepting ident == print
+accepting callsym == print
+accepting beginsym == print
+accepting ifsym == print
+accepting whilesym == print
+accepting print == print
+getsym: ident squ
+expecting ident
+accepting ident == ident
+getsym: endsym end
+Looking up squ
+end <function statement at 0x24469b0>
+StatList: appending 38067152 of type <class 'ir.PrintStat'> to 38066576
+accepting semicolon == endsym
+expecting endsym
+accepting endsym == endsym
+getsym: endsym end
+StatList 38066576 : [ 38066704 38067088 38067152 ]
+end <function statement at 0x24469b0>
+end <function statement at 0x24469b0>
+StatList: appending 38067216 of type <class 'ir.WhileStat'> to 38066192
+accepting semicolon == endsym
+expecting endsym
+accepting endsym == endsym
+getsym: period .
+StatList 38066192 : [ 38066320 38067216 ]
+end <function statement at 0x24469b0>
+end <function block at 0x2446aa0>
+expecting period
+accepting period == period
+end <function program at 0x2446b90>
+
+<class 'ir.Block'> 38067280 {
+	body: 	<class 'ir.StatList'> 38066192 {
+		children:
+		<class 'ir.AssignStat'> 38066320 {
+			expr: 	<class 'ir.Const'> 38066256 {
+				symbol: 	None
+				value: 	'1'
+			}
+			symbol: 	int x
+		}
+		<class 'ir.WhileStat'> 38067216 {
+			body: 	<class 'ir.StatList'> 38066576 {
+				children:
+				<class 'ir.CallStat'> 38066704 {
+					call: 	<class 'ir.CallExpr'> 38066640 {
+						symbol: 	function square
+					}
+				}
+				<class 'ir.AssignStat'> 38067088 {
+					expr: 	<class 'ir.BinExpr'> 38067024 {
+						children:
+						'plus'
+						<class 'ir.Var'> 38066832 {
+							symbol: 	int x
+						}
+						<class 'ir.Const'> 38066960 {
+							symbol: 	None
+							value: 	'1'
+						}
+					}
+					symbol: 	int x
+				}
+				<class 'ir.PrintStat'> 38067152 {
+					symbol: 	int squ
+				}
+			}
+			cond: 	<class 'ir.BinExpr'> 38066512 {
+				children:
+				'leq'
+				<class 'ir.Var'> 38066384 {
+					symbol: 	int x
+				}
+				<class 'ir.Const'> 38066448 {
+					symbol: 	None
+					value: 	'10'
+				}
+			}
+		}
+	}
+	defs: 	<class 'ir.DefinitionList'> 37407376 {
+		children:
+		<class 'ir.FunctionDef'> 38066128 {
+			body: 	<class 'ir.Block'> 38066064 {
+				body: 	<class 'ir.StatList'> 38065168 {
+					children:
+					<class 'ir.AssignStat'> 38066000 {
+						expr: 	<class 'ir.BinExpr'> 38065936 {
+							children:
+							'times'
+							<class 'ir.Var'> 38065744 {
+								symbol: 	int x
+							}
+							<class 'ir.Var'> 38065872 {
+								symbol: 	int x
+							}
+						}
+						symbol: 	int squ
+					}
+				}
+				defs: 	<class 'ir.DefinitionList'> 38064976 {
+				}
+				local_symtab: 	SymbolTable:
+				
+				global_symtab: 	SymbolTable:
+				int x
+				int squ
+				function square
+				
+			}
+			symbol: 	function square
+		}
+	}
+	local_symtab: 	SymbolTable:
+	int x
+	int squ
+	function square
+	
+	global_symtab: 	SymbolTable:
+	
+} 
+
+<class 'ir.Block'> 38067280
+<class 'ir.StatList'> 38066192
+StatList 38066192 : [ 38066320 38067216 ]
+<class 'ir.AssignStat'> 38066320
+<class 'ir.Const'> 38066256
+<class 'ir.WhileStat'> 38067216
+<class 'ir.StatList'> 38066576
+StatList 38066576 : [ 38066704 38067088 38067152 ]
+<class 'ir.CallStat'> 38066704
+<class 'ir.CallExpr'> 38066640
+<class 'ir.AssignStat'> 38067088
+<class 'ir.BinExpr'> 38067024
+<class 'ir.Var'> 38066832
+<class 'ir.Const'> 38066960
+<class 'ir.PrintStat'> 38067152
+<class 'ir.BinExpr'> 38066512
+<class 'ir.Var'> 38066384
+<class 'ir.Const'> 38066448
+<class 'ir.DefinitionList'> 37407376
+<class 'ir.FunctionDef'> 38066128
+<class 'ir.Block'> 38066064
+<class 'ir.StatList'> 38065168
+StatList 38065168 : [ 38066000 ]
+<class 'ir.AssignStat'> 38066000
+<class 'ir.BinExpr'> 38065936
+<class 'ir.Var'> 38065744
+<class 'ir.Var'> 38065872
+<class 'ir.DefinitionList'> 38064976
+<class 'ir.Block'> 38067280 -> <type 'NoneType'> 9071744
+<class 'ir.StatList'> 38066192 -> <class 'ir.Block'> 38067280
+<class 'ir.AssignStat'> 38066320 -> <class 'ir.StatList'> 38066192
+<class 'ir.Const'> 38066256 -> <class 'ir.AssignStat'> 38066320
+<class 'ir.WhileStat'> 38067216 -> <class 'ir.StatList'> 38066192
+<class 'ir.StatList'> 38066576 -> <class 'ir.WhileStat'> 38067216
+<class 'ir.CallStat'> 38066704 -> <class 'ir.StatList'> 38066576
+<class 'ir.CallExpr'> 38066640 -> <class 'ir.CallStat'> 38066704
+<class 'ir.AssignStat'> 38067088 -> <class 'ir.StatList'> 38066576
+<class 'ir.BinExpr'> 38067024 -> <class 'ir.AssignStat'> 38067088
+<class 'ir.Var'> 38066832 -> <type 'NoneType'> 9071744
+<class 'ir.Const'> 38066960 -> <type 'NoneType'> 9071744
+<class 'ir.PrintStat'> 38067152 -> <class 'ir.StatList'> 38066576
+<class 'ir.BinExpr'> 38066512 -> <class 'ir.WhileStat'> 38067216
+<class 'ir.Var'> 38066384 -> <type 'NoneType'> 9071744
+<class 'ir.Const'> 38066448 -> <type 'NoneType'> 9071744
+<class 'ir.DefinitionList'> 37407376 -> <class 'ir.Block'> 38067280
+<class 'ir.FunctionDef'> 38066128 -> <class 'ir.DefinitionList'> 37407376
+<class 'ir.Block'> 38066064 -> <class 'ir.FunctionDef'> 38066128
+<class 'ir.StatList'> 38065168 -> <class 'ir.Block'> 38066064
+<class 'ir.AssignStat'> 38066000 -> <class 'ir.StatList'> 38065168
+<class 'ir.BinExpr'> 38065936 -> <class 'ir.AssignStat'> 38066000
+<class 'ir.Var'> 38065744 -> <type 'NoneType'> 9071744
+<class 'ir.Var'> 38065872 -> <type 'NoneType'> 9071744
+<class 'ir.DefinitionList'> 38064976 -> <class 'ir.Block'> 38066064
+
+Total nodes in IR: 25 
+
+StatList : new 38067856
+Lowering <class 'ir.WhileStat'> 38067216
+
+<class 'ir.Block'> 38067280 {
+	body: 	<class 'ir.StatList'> 38066192 {
+		children:
+		<class 'ir.AssignStat'> 38066320 {
+			expr: 	<class 'ir.Const'> 38066256 {
+				symbol: 	None
+				value: 	'1'
+			}
+			symbol: 	int x
+		}
+		<class 'ir.StatList'> 38067856 {
+			children:
+			label1: <class 'ir.BranchStat'> 38067408 {
+				cond: 	<class 'ir.BinExpr'> 38066512 {
+					children:
+					'leq'
+					<class 'ir.Var'> 38066384 {
+						symbol: 	int x
+					}
+					<class 'ir.Const'> 38066448 {
+						symbol: 	None
+						value: 	'10'
+					}
+				}
+				target: 	label label2
+			}
+			<class 'ir.StatList'> 38066576 {
+				children:
+				<class 'ir.CallStat'> 38066704 {
+					call: 	<class 'ir.CallExpr'> 38066640 {
+						symbol: 	function square
+					}
+				}
+				<class 'ir.AssignStat'> 38067088 {
+					expr: 	<class 'ir.BinExpr'> 38067024 {
+						children:
+						'plus'
+						<class 'ir.Var'> 38066832 {
+							symbol: 	int x
+						}
+						<class 'ir.Const'> 38066960 {
+							symbol: 	None
+							value: 	'1'
+						}
+					}
+					symbol: 	int x
+				}
+				<class 'ir.PrintStat'> 38067152 {
+					symbol: 	int squ
+				}
+			}
+			<class 'ir.BranchStat'> 38067792 {
+				cond: 	<class 'ir.Const'> 38067728 {
+					symbol: 	None
+					value: 	1
+				}
+				target: 	label label1
+			}
+			label2: <class 'ir.EmptyStat'> 38067920 {
+			}
+		}
+	}
+	defs: 	<class 'ir.DefinitionList'> 37407376 {
+		children:
+		<class 'ir.FunctionDef'> 38066128 {
+			body: 	<class 'ir.Block'> 38066064 {
+				body: 	<class 'ir.StatList'> 38065168 {
+					children:
+					<class 'ir.AssignStat'> 38066000 {
+						expr: 	<class 'ir.BinExpr'> 38065936 {
+							children:
+							'times'
+							<class 'ir.Var'> 38065744 {
+								symbol: 	int x
+							}
+							<class 'ir.Var'> 38065872 {
+								symbol: 	int x
+							}
+						}
+						symbol: 	int squ
+					}
+				}
+				defs: 	<class 'ir.DefinitionList'> 38064976 {
+				}
+				local_symtab: 	SymbolTable:
+				
+				global_symtab: 	SymbolTable:
+				int x
+				int squ
+				function square
+				
+			}
+			symbol: 	function square
+		}
+	}
+	local_symtab: 	SymbolTable:
+	int x
+	int squ
+	function square
+	
+	global_symtab: 	SymbolTable:
+	
+} 
+
+<class 'ir.Block'> 38067280
+<class 'ir.StatList'> 38066192
+Not flattening 38066192 into 38067280 of type <class 'ir.Block'>
+<class 'ir.AssignStat'> 38066320
+<class 'ir.Const'> 38066256
+<class 'ir.StatList'> 38067856
+Flattening 38067856 into 38066192
+<class 'ir.BranchStat'> 38067408
+<class 'ir.BinExpr'> 38066512
+<class 'ir.Var'> 38066384
+<class 'ir.Const'> 38066448
+<class 'ir.StatList'> 38066576
+Flattening 38066576 into 38066192
+<class 'ir.CallStat'> 38066704
+<class 'ir.CallExpr'> 38066640
+<class 'ir.AssignStat'> 38067088
+<class 'ir.BinExpr'> 38067024
+<class 'ir.Var'> 38066832
+<class 'ir.Const'> 38066960
+<class 'ir.PrintStat'> 38067152
+<class 'ir.BranchStat'> 38067792
+<class 'ir.Const'> 38067728
+<class 'ir.EmptyStat'> 38067920
+<class 'ir.DefinitionList'> 37407376
+<class 'ir.FunctionDef'> 38066128
+<class 'ir.Block'> 38066064
+<class 'ir.StatList'> 38065168
+Not flattening 38065168 into 38066064 of type <class 'ir.Block'>
+<class 'ir.AssignStat'> 38066000
+<class 'ir.BinExpr'> 38065936
+<class 'ir.Var'> 38065744
+<class 'ir.Var'> 38065872
+<class 'ir.DefinitionList'> 38064976
+
+<class 'ir.Block'> 38067280 {
+	body: 	<class 'ir.StatList'> 38066192 {
+		children:
+		<class 'ir.AssignStat'> 38066320 {
+			expr: 	<class 'ir.Const'> 38066256 {
+				symbol: 	None
+				value: 	'1'
+			}
+			symbol: 	int x
+		}
+		label1: <class 'ir.BranchStat'> 38067408 {
+			cond: 	<class 'ir.BinExpr'> 38066512 {
+				children:
+				'leq'
+				<class 'ir.Var'> 38066384 {
+					symbol: 	int x
+				}
+				<class 'ir.Const'> 38066448 {
+					symbol: 	None
+					value: 	'10'
+				}
+			}
+			target: 	label label2
+		}
+		<class 'ir.CallStat'> 38066704 {
+			call: 	<class 'ir.CallExpr'> 38066640 {
+				symbol: 	function square
+			}
+		}
+		<class 'ir.AssignStat'> 38067088 {
+			expr: 	<class 'ir.BinExpr'> 38067024 {
+				children:
+				'plus'
+				<class 'ir.Var'> 38066832 {
+					symbol: 	int x
+				}
+				<class 'ir.Const'> 38066960 {
+					symbol: 	None
+					value: 	'1'
+				}
+			}
+			symbol: 	int x
+		}
+		<class 'ir.PrintStat'> 38067152 {
+			symbol: 	int squ
+		}
+		<class 'ir.BranchStat'> 38067792 {
+			cond: 	<class 'ir.Const'> 38067728 {
+				symbol: 	None
+				value: 	1
+			}
+			target: 	label label1
+		}
+		label2: <class 'ir.EmptyStat'> 38067920 {
+		}
+	}
+	defs: 	<class 'ir.DefinitionList'> 37407376 {
+		children:
+		<class 'ir.FunctionDef'> 38066128 {
+			body: 	<class 'ir.Block'> 38066064 {
+				body: 	<class 'ir.StatList'> 38065168 {
+					children:
+					<class 'ir.AssignStat'> 38066000 {
+						expr: 	<class 'ir.BinExpr'> 38065936 {
+							children:
+							'times'
+							<class 'ir.Var'> 38065744 {
+								symbol: 	int x
+							}
+							<class 'ir.Var'> 38065872 {
+								symbol: 	int x
+							}
+						}
+						symbol: 	int squ
+					}
+				}
+				defs: 	<class 'ir.DefinitionList'> 38064976 {
+				}
+				local_symtab: 	SymbolTable:
+				
+				global_symtab: 	SymbolTable:
+				int x
+				int squ
+				function square
+				
+			}
+			symbol: 	function square
+		}
+	}
+	local_symtab: 	SymbolTable:
+	int x
+	int squ
+	function square
+	
+	global_symtab: 	SymbolTable:
+	
+} 
+
+Liveness sets
+38085648 [label="BB38085648{\n<class 'ir.AssignStat'>}"];
+38085648 -> 38085584 [label="set([int x, int squ])"];
+
+gen: set([])
+kill: set([int x])
+live_in: set([int squ])
+live_out: set([int x, int squ])
+38085584 [label="BB38085584{\n[label label1]\n<class 'ir.BranchStat'>}"];
+38085584 -> 38085392 [label="set([int x, int squ])"];
+38085584 -> 38085456 [style=dashed,label="set([])"];
+
+gen: set([int x])
+kill: set([])
+live_in: set([int x, int squ])
+live_out: set([int x, int squ])
+38085392 [label="BB38085392{\n<class 'ir.CallStat'>}"];
+38085392 -> 38084752 [label="set([int x, int squ])"];
+
+gen: set([int x, int squ])
+kill: set([])
+live_in: set([int x, int squ])
+live_out: set([int x, int squ])
+38084752 [label="BB38084752{\n<class 'ir.AssignStat'>\n<class 'ir.PrintStat'>\n<class 'ir.BranchStat'>}"];
+38084752 -> 38085584 [style=dashed,label="set([int x, int squ])"];
+
+gen: set([int x, int squ])
+kill: set([int x])
+live_in: set([int x, int squ])
+live_out: set([int x, int squ])
+38085456 [label="BB38085456{\n[label label2]\n<class 'ir.EmptyStat'>}"];
+38085456 -> exit37369200 [label="set([])"];
+
+gen: set([])
+kill: set([])
+live_in: set([])
+live_out: set([])
+38085712 [label="BB38085712{\n<class 'ir.AssignStat'>}"];
+38085712 -> exit38066128 [label="set([int x, int squ])"];
+
+gen: set([int x])
+kill: set([int squ])
+live_in: set([int x])
+live_out: set([int x, int squ])
+{int x: 0, int squ: 1}
