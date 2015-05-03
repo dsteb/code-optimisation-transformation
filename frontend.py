@@ -159,8 +159,7 @@ def block(symtab) :
 			val = value;
 			if accept('lsquare') :
 				expect('number')
-				length = value;
-				local_vars.append(Symbol(val, standard_types['int'])) # TODO create array value
+				local_vars.append(Symbol(val, ArrayType('array', value, 'Int')))
 				expect('rsquare')
 			else : local_vars.append(Symbol(value, standard_types['int']))
 			

@@ -71,6 +71,8 @@ class Symbol(object):
 		self.value=value # if not None, it is a constant
 
 	def __repr__(self):
+		if self.stype.name == 'array' :
+			return '{} {}[{}] {}'.format(self.stype.name, self.name, self.stype.size, type(self.value) if self.value else '')
 		return self.stype.name+' '+self.name + ( self.value if type(self.value)==str else '')
 
 class SymbolTable(list):
