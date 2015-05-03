@@ -155,8 +155,15 @@ def block(symtab) :
 		expect('ident')
 		local_vars.append(Symbol(value, standard_types['int']))
 		while accept('comma') :
-			expect('ident')
-			local_vars.append(Symbol(value, standard_types['int']))
+			expect('ident');
+			val = value;
+			if accept('lsquare') :
+				expect('number')
+				length = value;
+				local_vars.append(Symbol(val, standard_types['int'])) # TODO create array value
+				expect('rsquare')
+			else : local_vars.append(Symbol(value, standard_types['int']))
+			
 		expect('semicolon');
 	while accept('procsym') :
 		expect('ident')
