@@ -1,5 +1,4 @@
 #!/usr/bin/python
-from program import __test_program
 
 __doc__='''Simple lexer for PL/0 using generators'''
 
@@ -64,7 +63,11 @@ def lexer(text) :
 			yield token(word[1]), word[1]
 		else : yield token(word), word
 
+__test_program = None
+with open('program.source', 'r') as source:
+		__test_program = source.read()
 
 if __name__ == '__main__' :
+
 	for t,w in lexer(__test_program) :
 		print t, w
