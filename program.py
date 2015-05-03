@@ -14,6 +14,7 @@ BEGIN
   BEGIN
      CALL square;
      x := x + 1;
+     v[0] := 8;
 	 !squ;
   END;
   x := 5 % 2;

@@ -101,6 +101,10 @@ def condition(symtab) :
 def statement(symtab) :
 	if accept('ident'):
 		target=symtab.find(value)
+		if accept('lsquare') :
+			expect('number')
+			index = value
+			expect('rsquare')
 		expect('becomes')
 		expr=expression(symtab)
 		return AssignStat(target=target, expr=expr, symtab=symtab)
