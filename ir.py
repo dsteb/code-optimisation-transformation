@@ -103,7 +103,7 @@ class IRNode(object):
 	
 	def __repr__(self):
 		from string import split, join
-		attrs = set(['body','cond', 'value','thenpart','elsepart', 'symbol', 'call', 'step', 'expr', 'target', 'defs', 'global_symtab', 'local_symtab', 'index' ]) & set(dir(self))
+		attrs = set(['body','cond', 'value','thenpart','elsepart', 'symbol', 'call', 'step', 'expr', 'target', 'defs', 'global_symtab', 'local_symtab', 'index', 'return_expr' ]) & set(dir(self))
 
 		res=`type(self)`+' '+`id(self)`+' {\n'
 		try :
@@ -422,7 +422,15 @@ class PrintStat(Stat):
 
 	def collect_uses(self):
 		return [self.symbol]
-	
+
+class ReturnStat(Stat):
+	def __init__(self, parent=None, return_expr=None, symtab=None):
+		self.parent=parent
+		self.return_expr=return_expr
+		self.symtab=symtab
+
+	def collect_uses(self):
+		return []
 
 #DEFINITIONS
 class Definition(IRNode):
@@ -459,4 +467,3 @@ def print_stat_list(node):
 		for n in node.children :
 			print id(n),
 		print ']'
-	

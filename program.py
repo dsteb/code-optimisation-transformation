@@ -6,7 +6,7 @@ VAR x, squ, v[5];
 
 PROCEDURE square(a);
 BEGIN
-  squ := a * a;
+  RETURN a * a;
 END;
 
 PROCEDURE exec;

@@ -36,6 +36,7 @@ symbols =  {
 	'mod'       : ['%'],
 	'lsquare'   : ['['],
 	'rsquare'   : [']'],
+	'return'    : ['return'],
 }
 
 def token(word):

@@ -115,10 +115,10 @@ def statement(symtab) :
 			expect('rsquare')
 		expect('becomes')
 		expr=expression(symtab)
-		if index :
-			return ArrayAssignStat(target=target, expr=expr, index=index, symtab=symtab)
-		else :
+		if index is None :
 			return AssignStat(target=target, expr=expr, symtab=symtab)
+		else :
+			return ArrayAssignStat(target=target, expr=expr, index=index, symtab=symtab)
 	elif accept('callsym') :
 		expect('ident')
 		var = value
@@ -156,10 +156,14 @@ def statement(symtab) :
 		val = value
 		expect('semicolon')
 		return PrintStat(symbol=symtab.find(val),symtab=symtab)
+	elif accept('return') :
+		expr = expression(symtab)
+		expect('semicolon')
+		return ReturnStat(return_expr=expr, symtab=symtab)
  
 @logger
-def block(symtab) :
-	local_vars = SymbolTable()
+def block(symtab, local_vars=None) :
+	local_vars = SymbolTable() if local_vars is None else local_vars
 	defs = DefinitionList()
 	if accept('constsym') :
 		expect('ident')
@@ -192,14 +196,15 @@ def block(symtab) :
 		fname=value
 		if accept('lparen') :
 			expect('ident');
-			local_vars.append(Symbol(value, standard_types['int']))
+			new_local_vars = SymbolTable()
+			new_local_vars.append(Symbol(value, standard_types['int']))
 			while accept('comma') :
 				expect('ident');
-				local_vars.append(Symbol(value, standard_types['int']))
+				new_local_vars.append(Symbol(value, standard_types['int']))
 			expect('rparen')
 		expect('semicolon');
 		local_vars.append(Symbol(fname, standard_types['function']))
-		fbody=block(local_vars)
+		fbody=block(local_vars, new_local_vars)
 		expect('semicolon')
 		defs.append(FunctionDef(symbol=local_vars.find(fname), body=fbody))
 	stat = statement(SymbolTable(symtab[:]+local_vars))
