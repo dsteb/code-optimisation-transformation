@@ -167,6 +167,16 @@ class Var(IRNode):
 	def collect_uses(self):
 		return [self.symbol]
 
+class ArrayVar(IRNode):
+	def __init__(self,parent=None, var=None, index=None, symtab=None):
+		self.parent=parent
+		self.symbol=var
+		self.index=index
+		self.symtab=symtab
+
+	def collect_uses(self):
+		return [self.symbol]
+
 #EXPRESSIONS
 class Expr(IRNode):
 	def getOperator(self):

@@ -45,7 +45,14 @@ def expect(s) :
  
 @logger
 def factor(symtab) :
-	if accept('ident') : return Var(var=symtab.find(value), symtab=symtab)
+	if accept('ident') :
+		var=value
+		if accept('lsquare'):
+			expect('number')
+			index=value
+			expect('rsquare')
+			return ArrayVar(var=symtab.find(var), index=index, symtab=symtab)
+		return Var(var=symtab.find(value), symtab=symtab)
 	if accept('number') : return Const(value=value, symtab=symtab)
 	elif accept('lparen') :
 		expr = expression()
