@@ -101,13 +101,17 @@ def condition(symtab) :
 def statement(symtab) :
 	if accept('ident'):
 		target=symtab.find(value)
+		index=None
 		if accept('lsquare') :
 			expect('number')
 			index = value
 			expect('rsquare')
 		expect('becomes')
 		expr=expression(symtab)
-		return AssignStat(target=target, expr=expr, symtab=symtab)
+		if index :
+			return ArrayAssignStat(target=target, expr=expr, index=index, symtab=symtab)
+		else :
+			return AssignStat(target=target, expr=expr, symtab=symtab)
 	elif accept('callsym') :
 		expect('ident')
 		return CallStat(call_expr=CallExpr(function=symtab.find(value), symtab=symtab), symtab=symtab)

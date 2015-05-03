@@ -103,7 +103,7 @@ class IRNode(object):
 	
 	def __repr__(self):
 		from string import split, join
-		attrs = set(['body','cond', 'value','thenpart','elsepart', 'symbol', 'call', 'step', 'expr', 'target', 'defs', 'global_symtab', 'local_symtab' ]) & set(dir(self))
+		attrs = set(['body','cond', 'value','thenpart','elsepart', 'symbol', 'call', 'step', 'expr', 'target', 'defs', 'global_symtab', 'local_symtab', 'index' ]) & set(dir(self))
 
 		res=`type(self)`+' '+`id(self)`+' {\n'
 		try :
@@ -287,6 +287,19 @@ class AssignStat(Stat):
 	def __init__(self, parent=None, target=None, expr=None, symtab=None):
 		self.parent=parent
 		self.symbol=target
+		self.expr=expr
+		self.expr.parent=self
+		self.symtab=symtab
+
+	def collect_uses(self):
+		try :	return self.expr.collect_uses()
+		except AttributeError : return []
+
+class ArrayAssignStat(Stat):
+	def __init__(self, parent=None, target=None, index=None, expr=None, symtab=None):
+		self.parent=parent
+		self.symbol=target
+		self.index=index
 		self.expr=expr
 		self.expr.parent=self
 		self.symtab=symtab
