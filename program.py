@@ -22,6 +22,8 @@ END;
 
 BEGIN
   CALL exec;
-  v[0] := 5 % 2;
+  v[1] := 5;
+  v[0] := v[1] % 2;
+  v[1] := square(5);
 END.
 '''

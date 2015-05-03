@@ -46,13 +46,23 @@ def expect(s) :
 @logger
 def factor(symtab) :
 	if accept('ident') :
-		var=value
-		if accept('lsquare'):
+		var=symtab.find(value)
+		if var.stype.name == 'array' :
+			expect('lsquare')
 			expect('number')
 			index=value
 			expect('rsquare')
-			return ArrayVar(var=symtab.find(var), index=index, symtab=symtab)
-		return Var(var=symtab.find(value), symtab=symtab)
+			return ArrayVar(var=var, index=index, symtab=symtab)
+		elif var.stype.name == 'function' :
+			if accept('lparen'):
+				params = []
+				params.append(expression(symtab))
+				while accept('comma') :
+					params.append(expression(symtab))
+				expect('rparen')
+				return CallExpr(function=var, parameters=params, symtab=symtab)
+			return CallExpr(function=var, symtab=symtab)
+		return Var(var=var, symtab=symtab)
 	if accept('number') : return Const(value=value, symtab=symtab)
 	elif accept('lparen') :
 		expr = expression()
