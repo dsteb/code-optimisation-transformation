@@ -182,6 +182,13 @@ def block(symtab) :
 	while accept('procsym') :
 		expect('ident')
 		fname=value
+		if accept('lparen') :
+			expect('ident');
+			local_vars.append(Symbol(value, standard_types['int']))
+			while accept('comma') :
+				expect('ident');
+				local_vars.append(Symbol(value, standard_types['int']))
+			expect('rparen')
 		expect('semicolon');
 		local_vars.append(Symbol(fname, standard_types['function']))
 		fbody=block(local_vars)

@@ -1,22 +1,27 @@
 #!/usr/bin/python
 
 # Test support
-__test_program='''VAR x, squ, v[5];
- 
-PROCEDURE square;
+__test_program='''
+VAR x, squ, v[5];
+
+PROCEDURE square(y);
 BEGIN
-   squ := x * x
+   squ := y * y
 END;
- 
+
+PROCEDURE exec;
 BEGIN
   x := 1;
   WHILE x <= 10 DO
   BEGIN
      CALL square;
      x := x + 1;
-     v[3] := 8;
-     x := 5 + v[2];
-	 !squ;
+     !squ;
   END;
-  x := 5 % 2;
-END.'''
+END;
+
+BEGIN
+  CALL exec;
+  v[0] := 5 % 2;
+END.
+'''

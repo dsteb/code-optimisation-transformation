@@ -58,7 +58,7 @@ def lexer(text) :
 	text=join(t,' ') # Join alphanumeric and non-alphanumeric, with spaces
 	words=[ strip(w) for w in split(lower(text)) ] # Split tokens
 	for word in words :
-		if word == '];':
+		if word == '];' or word == ');' :
 			yield token(word[0]), word[0]
 			yield token(word[1]), word[1]
 		else : yield token(word), word
