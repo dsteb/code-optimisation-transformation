@@ -121,12 +121,14 @@ def statement(symtab) :
 			return AssignStat(target=target, expr=expr, symtab=symtab)
 	elif accept('callsym') :
 		expect('ident')
+		var = value
 		if accept('lparen'):
-			expr_list = []
-			expr_list.append(expression(symtab))
+			params = []
+			params.append(expression(symtab))
 			while accept('comma') :
-				expr_list.append(expression(symtab))
+				params.append(expression(symtab))
 			expect('rparen')
+			return CallStat(call_expr=CallExpr(function=symtab.find(var), parameters=params, symtab=symtab), symtab=symtab)
 		return CallStat(call_expr=CallExpr(function=symtab.find(value), symtab=symtab), symtab=symtab)
 	elif accept('beginsym') :
 		statement_list = StatList(symtab=symtab)

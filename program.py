@@ -4,9 +4,9 @@
 __test_program='''
 VAR x, squ, v[5];
 
-PROCEDURE square(y);
+PROCEDURE square(a);
 BEGIN
-  squ := y * y
+  squ := a * a;
 END;
 
 PROCEDURE exec;
