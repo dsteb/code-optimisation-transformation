@@ -6,7 +6,7 @@ VAR x, squ, v[5];
 
 PROCEDURE square(y);
 BEGIN
-   squ := y * y
+  squ := y * y
 END;
 
 PROCEDURE exec;
@@ -14,9 +14,9 @@ BEGIN
   x := 1;
   WHILE x <= 10 DO
   BEGIN
-     CALL square;
-     x := x + 1;
-     !squ;
+    CALL square(x);
+    x := x + 1;
+    !squ;
   END;
 END;
 
