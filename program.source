@@ -7,11 +7,9 @@ END;
 
 PROCEDURE exec;
 BEGIN
-  x := 1;
-  WHILE x <= 10 DO
+  FOR (x := 1 + 2; x < 10; x := x + 1)
   BEGIN
     CALL square(x);
-    x := x + 1;
     !squ;
   END;
 END;

@@ -36,6 +36,7 @@ symbols =  {
 	'lsquare'   : ['['],
 	'rsquare'   : [']'],
 	'return'    : ['return'],
+	'forsym'    : ['for']
 }
 
 def token(word):

@@ -8,7 +8,7 @@ from logger import logger
 import sys
 sys.stdout = open('log', 'w')
 
-symbols =  [ 'ident', 'number', 'lparen', 'rparen', 'times', 'slash', 'plus', 'minus', 'eql', 'neq', 'lss', 'leq', 'gtr', 'geq', 'callsym', 'beginsym', 'semicolon', 'endsym', 'ifsym', 'whilesym', 'becomes', 'thensym', 'dosym', 'constsym', 'comma', 'varsym', 'procsym', 'period', 'oddsym' ]
+symbols =  [ 'ident', 'number', 'lparen', 'rparen', 'times', 'slash', 'plus', 'minus', 'eql', 'neq', 'lss', 'leq', 'gtr', 'geq', 'callsym', 'beginsym', 'semicolon', 'endsym', 'ifsym', 'whilesym', 'becomes', 'thensym', 'dosym', 'constsym', 'comma', 'varsym', 'procsym', 'period', 'oddsym', 'forsym' ]
 
 sym = None
 value = None
@@ -116,7 +116,35 @@ def condition(symtab) :
  
 @logger
 def statement(symtab) :
-	if accept('ident'):
+	if accept('forsym'):
+		expect('lparen')
+		
+		# TODO add empty expression and arrays support
+
+		# init
+		expect('ident')
+		target=symtab.find(value)
+		expect('becomes')
+		expr = expression(symtab)
+		expect('semicolon')
+		init = AssignStat(target=target, expr=expr, symtab=symtab)
+
+		# condition
+		cond = condition(symtab)
+		expect('semicolon')
+
+		# increment
+		expect('ident')
+		target=symtab.find(value)
+		expect('becomes')
+		expr = expression(symtab)
+		step = AssignStat(target=target, expr=expr, symtab=symtab)
+
+		expect('rparen')
+
+		body = statement(symtab)
+		return ForStat(init=init, cond=cond, step=step, body=body, symtab=symtab)
+	elif accept('ident'):
 		target=symtab.find(value)
 		index=None
 		if accept('lsquare') :

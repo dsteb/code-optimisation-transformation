@@ -249,7 +249,7 @@ class IfStat(Stat):
 		exit_stat.setLabel(exit_label)
 		if self.elsepart :
 			then_label = standard_types['label']()
-			self.thenpart.setLabel(else_label)
+			self.thenpart.setLabel(then_label)
 			branch_to_then = BranchStat(None,self.cond,then_label,self.symtab)
 			branch_to_exit = BranchStat(None,None,exit_label,self.symtab)
 			stat_list = StatList(self.parent, [branch_to_then,self.elsepart,branch_to_exit,self.thenpart,exit_stat], self.symtab)
@@ -258,8 +258,7 @@ class IfStat(Stat):
 			branch_to_exit = BranchStat(None,UnExpr(None,['not', self.cond]),exit_label,self.symtab)
 			stat_list = StatList(self.parent, [branch_to_exit,self.thenpart,exit_stat], self.symtab)
 			return self.parent.replace(self,stat_list)
-						
-	
+
 class WhileStat(Stat):
 	def __init__(self, parent=None, cond=None, body=None, symtab=None):
 		self.parent=parent
@@ -289,9 +288,12 @@ class ForStat(Stat):
 		self.body=body
 		self.cond.parent=self
 		self.body.parent=self
-		self.target.parent=self
+#		self.target.parent=self
 		self.step.parent=self
 		self.symtab=symtab
+
+	def collect_uses(self):
+		return self.init.collect_uses() + self.step.collect_uses()
 
 class AssignStat(Stat):
 	def __init__(self, parent=None, target=None, expr=None, symtab=None):
