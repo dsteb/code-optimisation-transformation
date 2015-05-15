@@ -1,4 +1,4 @@
-VAR x, squ, v[5];
+VAR x, z, squ, v[5];
 
 PROCEDURE square(a);
 BEGIN
@@ -7,7 +7,7 @@ END;
 
 PROCEDURE exec;
 BEGIN
-  FOR (x := 1 + 2; x < 10; x := x + 1)
+  FOR (z := 1 + 2; z < 10; z := z + 1)
   BEGIN
     CALL square(x);
     !squ;

@@ -273,7 +273,7 @@ class WhileStat(Stat):
 		exit_label = standard_types['label']()
 		exit_stat = EmptyStat(self.parent,symtab=self.symtab)
 		exit_stat.setLabel(exit_label)
-		branch = BranchStat(None,self.cond,exit_label,self.symtab)
+		branch = BranchStat(None,UnExpr(None,['not', self.cond]),exit_label,self.symtab)
 		branch.setLabel(entry_label)
 		loop = BranchStat(None,Const(None, 1),entry_label,self.symtab)
 		stat_list = StatList(self.parent, [branch,self.body,loop,exit_stat], self.symtab)
@@ -291,6 +291,17 @@ class ForStat(Stat):
 #		self.target.parent=self
 		self.step.parent=self
 		self.symtab=symtab
+
+	def lower(self):
+		entry_label = standard_types['label']()
+		exit_label = standard_types['label']()
+		exit_stat = EmptyStat(self.parent,symtab=self.symtab)
+		exit_stat.setLabel(exit_label)
+		branch = BranchStat(None,UnExpr(None,['not', self.cond]),exit_label,self.symtab)
+		branch.setLabel(entry_label)
+		loop = BranchStat(None,Const(None, 1),entry_label,self.symtab)
+		stat_list = StatList(self.parent, [self.init, branch, self.body, self.step, loop, exit_stat], self.symtab)
+		return self.parent.replace(self,stat_list)
 
 	def collect_uses(self):
 		return self.init.collect_uses() + self.step.collect_uses()
