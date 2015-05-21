@@ -3,6 +3,8 @@
 __doc__='''Support functions for visiting the AST
 These functions expose high level interfaces (passes) for actions that can be applied to multiple IR nodes.'''
 
+import ir
+
 def get_node_list(root):
 	'''Get a list of all nodes in the AST'''
 	def register_nodes(l):
@@ -33,14 +35,25 @@ def get_symbol_tables(root):
 def lowering(node):
 	'''Lowering action for a node
 	(all high level nodes can be lowered to lower-level representation'''
-	try :
-		check=node.lower()
-		print 'Lowering', type(node), id(node)
-		if not check : 
-			print 'Failed!'
-	except Exception, e :
-		#print 'Cannot lower', type(node), e
-		pass # lowering not yet implemented for this class
+
+	# no need
+	if (isinstance(node, ir.Block) or isinstance(node, ir.StatList) or
+			isinstance(node, ir.CallStat) or isinstance(node, ir.CallExpr) or
+			isinstance(node, ir.Const) or isinstance(node, ir.Var) or
+			isinstance(node, ir.DefinitionList) or isinstance(node, ir.FunctionDef)):
+		return
+
+	# implement
+	if (isinstance(node, ir.ArrayAssignStat) or isinstance(node, ir.BinExpr) or
+			isinstance(node, ir.ReturnStat) or isinstance(node, ir.PrintStat) or
+			isinstance(node, ir.AssignStat)):
+		print 'lowering not yet implemented for ', type(node)
+		return
+
+	check=node.lower()
+	print 'Lowering', type(node), id(node)
+	if not check : 
+		print 'Failed!'
 
 def flattening(node):
 	'''Flattening action for a node 

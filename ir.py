@@ -129,11 +129,10 @@ class IRNode(object):
 		if 'children' in dir(self) and len(self.children) :
 			#print 'navigating children of', type(self), id(self), len(self.children)
 			for node in self.children :
-				try : node.navigate(action)
-				except Exception : pass
+				if hasattr(node, 'navigate'): node.navigate(action)
 		for d in attrs :
-			try : getattr(self,d).navigate(action)
-			except Exception : pass
+			if hasattr(getattr(self,d), 'navigate'):
+				getattr(self,d).navigate(action)
 	
 	def replace(self, old, new):
 		if 'children' in dir(self) and len(self.children) and old in self.children:
