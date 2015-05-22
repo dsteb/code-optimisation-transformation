@@ -1,21 +1,5 @@
-VAR x, z, squ, v[5];
-
-PROCEDURE square(a);
-BEGIN
-  RETURN a * a;
-END;
-
-PROCEDURE exec;
-BEGIN
-  FOR (z := 1 + 2; z < 10; z := z + 1)
-  BEGIN
-    CALL square(x);
-    !squ;
-  END;
-END;
+VAR a;
 
 BEGIN
-  CALL exec;
-  v[0] := 1 + 2 * x;
-  v[1] := square(5);
+  a := 1 + 2 + 3;
 END.

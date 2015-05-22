@@ -75,6 +75,12 @@ class Symbol(object):
 			return '{} {}[{}] {}'.format(self.stype.name, self.name, self.stype.size, type(self.value) if self.value else '')
 		return self.stype.name+' '+self.name + ( self.value if type(self.value)==str else '')
 
+	def collect_uses(self):
+		return []
+
+	def getFunction(self):
+		return 'global'
+
 class SymbolTable(list):
 	def find(self, name):
 		print 'Looking up', name
@@ -91,7 +97,6 @@ class SymbolTable(list):
 		
 	def exclude(self, barred_types):
 		return [ symb for symb in self if symb.stype not in barred_types ]
-
 
 #IRNODE
 class IRNode(object):
@@ -150,19 +155,22 @@ class IRNode(object):
 			except Exception :
 				pass
 		return False
-			
+
+	def collect_uses(self):
+		return []
 
 #CONST and VAR	
 class Const(IRNode):
 	def __init__(self,parent=None, value=0, symb=None, symtab=None):
 		self.parent=parent
 		self.value=value
-		self.symbol=symb
 		self.symtab=symtab
 
 	def lower(self):
-		return self.parent.replace(self, self.value)
-		
+		sym = Symbol(self.value, standard_types['int'])
+		stat_list = StatList(self.parent, [sym], self.symtab)
+		return self.parent.replace(self, stat_list)
+
 class Var(IRNode):
 	def __init__(self,parent=None, var=None, symtab=None):
 		self.parent=parent
@@ -176,7 +184,6 @@ class Var(IRNode):
 		dest = IRVar().name
 		load = LoadStat(dest=dest, value=self.symbol)
 		return self.parent.replace(self, load)
-
 
 class ArrayVar(IRNode):
 	def __init__(self,parent=None, var=None, index=None, symtab=None):
@@ -368,8 +375,6 @@ class BranchStat(Stat):
 class EmptyStat(Stat):
 	pass
 
-	def collect_uses(self):
-		return []
 
 class StoreStat(Stat):
 	def __init__(self, parent=None, symbol=None, symtab=None):
@@ -407,7 +412,10 @@ class StatList(Stat):
 		self.children.append(elem)
 
 	def collect_uses(self):
-		return sum([ c.collect_uses() for c in self.children ])
+		s = []
+		for c in self.children:
+			s += c.collect_uses()
+		return s
 
 	def print_content(self):
 			print 'StatList', id(self), ': [',
