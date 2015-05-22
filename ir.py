@@ -97,13 +97,16 @@ class SymbolTable(list):
 class IRNode(object):
 	def __init__(self,parent=None, children=None, symtab=None):
 		self.parent=parent
-		if children :	self.children=children
+		if children :
+			self.children=children
+			for c in self.children:
+				if hasattr(c, 'parent'): c.parent=self
 		else : self.children=[]
 		self.symtab=symtab
 	
 	def __repr__(self):
 		from string import split, join
-		attrs = set(['body','cond', 'value','thenpart','elsepart', 'symbol', 'call', 'step', 'expr', 'target', 'defs', 'global_symtab', 'local_symtab', 'index', 'return_expr' ]) & set(dir(self))
+		attrs = set(['body','cond', 'value','thenpart','elsepart', 'symbol', 'call', 'step', 'expr', 'target', 'defs', 'global_symtab', 'local_symtab', 'index', 'return_expr', 'dest' ]) & set(dir(self))
 
 		res=`type(self)`+' '+`id(self)`+' {\n'
 		try :
@@ -156,6 +159,9 @@ class Const(IRNode):
 		self.value=value
 		self.symbol=symb
 		self.symtab=symtab
+
+	def lower(self):
+		return self.parent.replace(self, self.value)
 		
 class Var(IRNode):
 	def __init__(self,parent=None, var=None, symtab=None):
@@ -165,6 +171,12 @@ class Var(IRNode):
 
 	def collect_uses(self):
 		return [self.symbol]
+
+	def lower(self):
+		dest = IRVar().name
+		load = LoadStat(dest=dest, value=self.symbol)
+		return self.parent.replace(self, load)
+
 
 class ArrayVar(IRNode):
 	def __init__(self,parent=None, var=None, index=None, symtab=None):
@@ -200,7 +212,10 @@ class CallExpr(Expr):
 	def __init__(self, parent=None, function=None, parameters=None, symtab=None):
 		self.parent=parent
 		self.symbol=function
-		if parameters : self.children=parameters[:]
+		if parameters :
+			self.children=parameters[:]
+			for c in self.children:
+				if hasattr(c, 'parent'): c.parent = self
 		else : self.children=[]
 
 #STATEMENTS
@@ -366,9 +381,10 @@ class StoreStat(Stat):
 		return [self.symbol]
 
 class LoadStat(Stat):
-	def __init__(self, parent=None, symbol=None, symtab=None):
+	def __init__(self, parent=None, dest=None, value=None, symtab=None):
 		self.parent=parent
-		self.symbol=symbol
+		self.dest=dest
+		self.value=value
 		self.symtab=symtab
 
 	def collect_uses(self):
@@ -469,7 +485,16 @@ class DefinitionList(IRNode):
 	def append(self, elem):
 		elem.parent=self
 		self.children.append(elem)
-		
+
+
+_var_id = 0
+class IRVar:
+
+	def __init__(self):
+		global _var_id
+		self.id = _var_id
+		_var_id += 1
+		self.name = 't' + `self.id`
 
 def print_stat_list(node):
 	'''Navigation action: print'''

@@ -39,7 +39,6 @@ def lowering(node):
 	# no need
 	if (isinstance(node, ir.Block) or isinstance(node, ir.StatList) or
 			isinstance(node, ir.CallStat) or isinstance(node, ir.CallExpr) or
-			isinstance(node, ir.Const) or isinstance(node, ir.Var) or
 			isinstance(node, ir.DefinitionList) or isinstance(node, ir.FunctionDef)):
 		return
 
