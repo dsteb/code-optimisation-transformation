@@ -69,6 +69,7 @@ class Symbol(object):
 		self.name=name
 		self.stype=stype
 		self.value=value # if not None, it is a constant
+		self.symbol=name
 
 	def __repr__(self):
 		if self.stype.name == 'array' :
@@ -111,7 +112,7 @@ class IRNode(object):
 	
 	def __repr__(self):
 		from string import split, join
-		attrs = set(['body','cond', 'value','thenpart','elsepart', 'symbol', 'call', 'step', 'expr', 'target', 'defs', 'global_symtab', 'local_symtab', 'index', 'return_expr', 'dest' ]) & set(dir(self))
+		attrs = set(['body','cond', 'value','thenpart','elsepart', 'symbol', 'call', 'step', 'expr', 'target', 'defs', 'global_symtab', 'local_symtab', 'index', 'return_expr', 'dest', 'left', 'right', 'op' ]) & set(dir(self))
 
 		res=`type(self)`+' '+`id(self)`+' {\n'
 		try :
@@ -210,6 +211,20 @@ class Expr(IRNode):
 class BinExpr(Expr):
 	def getOperands(self):
 		return self.children[1:]
+
+	def lower(self):
+		if not isinstance(self.children[1], StatList):
+			self.children[1].lower()
+		if not isinstance(self.children[2], StatList):
+			self.children[2].lower()
+		left = self.children[1].children[-1] # last statement from StatList
+		right = self.children[2].children[-1] # last statement from StatList
+		op = self.children[0]
+		dest = IRVar().name
+		stat = BinStat(symbol=dest, left=left.symbol, right=right.symbol, op=op)
+		children = self.children[1].children + self.children[2].children + [stat]
+		stat_list = StatList(self.parent, children, self.symtab)
+		return self.parent.replace(self, stat_list)
 
 class UnExpr(Expr):
 	def getOperand(self):
@@ -512,3 +527,14 @@ def print_stat_list(node):
 		for n in node.children :
 			print id(n),
 		print ']'
+
+class BinStat(Stat):
+	def __init__(self, parent=None, symbol=None, left=None, right=None, op=None):
+		self.parent=parent
+		self.symbol=symbol
+		self.left=left
+		self.right=right
+		self.op = op
+
+	def collect_uses(self):
+		return [self.symbol]
