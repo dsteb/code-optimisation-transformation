@@ -1,5 +1,5 @@
-VAR a, b;
+VAR a, b, c;
 
 BEGIN
-  a := (1 + 2) * b;
+  a := (a * b) / c + 1;
 END.

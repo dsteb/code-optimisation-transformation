@@ -363,7 +363,7 @@ class AssignStat(Stat):
 	def lower(self):
 		self.expr.lower()
 		source = self.expr.children[-1].symbol
-		stat = LoadStat(symbol=self.symbol, value=source)
+		stat = StoreStat(symbol=self.symbol, value=source)
 		children = self.expr.children + [stat]
 		stat_list = StatList(self.parent, children, self.symtab)
 		return self.parent.replace(self,stat_list)
@@ -406,9 +406,10 @@ class EmptyStat(Stat):
 
 
 class StoreStat(Stat):
-	def __init__(self, parent=None, symbol=None, symtab=None):
+	def __init__(self, parent=None, symbol=None, value=None, symtab=None):
 		self.parent=parent
 		self.symbol=symbol
+		self.value=value
 		self.symtab=symtab
 		
 	def collect_uses(self):
