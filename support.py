@@ -44,9 +44,7 @@ def lowering(node):
 		return
 
 	# implement
-	if (isinstance(node, ir.ArrayAssignStat) or
-			isinstance(node, ir.ReturnStat) or isinstance(node, ir.PrintStat) or
-			isinstance(node, ir.AssignStat)):
+	if (isinstance(node, ir.ArrayAssignStat) or isinstance(node, ir.ReturnStat) or isinstance(node, ir.PrintStat)):
 		print 'lowering not yet implemented for ', type(node)
 		return
 

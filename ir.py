@@ -360,6 +360,14 @@ class AssignStat(Stat):
 		try :	return self.expr.collect_uses()
 		except AttributeError : return []
 
+	def lower(self):
+		self.expr.lower()
+		source = self.expr.children[-1].symbol
+		stat = LoadStat(symbol=self.symbol, value=source)
+		children = self.expr.children + [stat]
+		stat_list = StatList(self.parent, children, self.symtab)
+		return self.parent.replace(self,stat_list)
+
 class ArrayAssignStat(Stat):
 	def __init__(self, parent=None, target=None, index=None, expr=None, symtab=None):
 		self.parent=parent
