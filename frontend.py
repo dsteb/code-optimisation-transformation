@@ -65,7 +65,7 @@ def factor(symtab) :
 		return Var(var=var, symtab=symtab)
 	if accept('number') : return Const(value=value, symtab=symtab)
 	elif accept('lparen') :
-		expr = expression()
+		expr = expression(symtab)
 		expect('rparen')
 		return expr
 	else :
