@@ -35,12 +35,12 @@ def get_symbol_tables(root):
 def lowering(node):
 	'''Lowering action for a node
 	(all high level nodes can be lowered to lower-level representation'''
-	print "lowering..... ", node, type(node)
+
 	# no need
 	if (isinstance(node, ir.Block) or isinstance(node, ir.StatList) or
 			isinstance(node, ir.CallStat) or isinstance(node, ir.CallExpr) or
 			isinstance(node, ir.DefinitionList) or isinstance(node, ir.FunctionDef) or
-			isinstance(node, ir.BinStat)):
+			isinstance(node, ir.BinStat) or isinstance(node, ir.LoadStat)):
 		return
 
 	# implement

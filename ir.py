@@ -183,8 +183,9 @@ class Var(IRNode):
 
 	def lower(self):
 		dest = IRVar().name
-		load = LoadStat(dest=dest, value=self.symbol)
-		return self.parent.replace(self, load)
+		load = LoadStat(symbol=dest, value=self.symbol)
+		stat_list = StatList(self.parent, [load], self.symtab)
+		return self.parent.replace(self, stat_list)
 
 class ArrayVar(IRNode):
 	def __init__(self,parent=None, var=None, index=None, symtab=None):
@@ -222,7 +223,12 @@ class BinExpr(Expr):
 		op = self.children[0]
 		dest = IRVar().name
 		stat = BinStat(symbol=dest, left=left.symbol, right=right.symbol, op=op)
-		children = self.children[1].children + self.children[2].children + [stat]
+		children = [] 
+		if not isinstance(left, Symbol):
+			children += self.children[1].children
+		if not isinstance(right, Symbol):
+			children += self.children[2].children
+		children += [stat]
 		stat_list = StatList(self.parent, children, self.symtab)
 		return self.parent.replace(self, stat_list)
 
@@ -401,9 +407,9 @@ class StoreStat(Stat):
 		return [self.symbol]
 
 class LoadStat(Stat):
-	def __init__(self, parent=None, dest=None, value=None, symtab=None):
+	def __init__(self, parent=None, symbol=None, value=None, symtab=None):
 		self.parent=parent
-		self.dest=dest
+		self.symbol=symbol
 		self.value=value
 		self.symtab=symtab
 
