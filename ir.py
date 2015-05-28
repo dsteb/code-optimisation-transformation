@@ -147,12 +147,12 @@ class IRNode(object):
 		if 'children' in dir(self) and len(self.children) and old in self.children:
 			self.children[self.children.index(old)]=new
 			return True
-		attrs = set(['body','cond', 'value','thenpart','elsepart', 'symbol', 'call', 'step', 'expr', 'target', 'defs', 'global_symtab', 'local_symtab' ]) & set(dir(self))
+		attrs = set(['body','cond', 'value','thenpart','elsepart', 'symbol', 'call', 'step', 'expr', 'target', 'defs', 'global_symtab', 'local_symtab', 'index' ]) & set(dir(self))
 		for d in attrs :
 			try :
 				if getattr(self,d)==old :
 					setattr(self,d,new)
-					return True			
+					return True
 			except Exception :
 				pass
 		return False
@@ -192,19 +192,26 @@ class ArrayVar(IRNode):
 		self.parent=parent
 		self.symbol=var
 		self.index=index
+		self.index.parent=self
 		self.symtab=symtab
 
 	def collect_uses(self):
 		return [self.symbol]
 
 	def lower(self):
-		dest = IRVar().name
-		load = LoadArrStat(symbol=dest, index=self.index, value=self.symbol)
-		stat_list = StatList(self.parent, [load], self.symtab)
+		if not isinstance(self.index, Const):
+			self.index.lower()
+			print self.index
+			dest = IRVar().name
+			index = self.index.children[-1].symbol
+			load = LoadArrStat(symbol=dest, index=index, value=self.symbol)
+			children = self.index.children + [load]
+			stat_list = StatList(self.parent, children, self.symtab)
+		else:
+			dest = IRVar().name
+			load = LoadArrStat(symbol=dest, index=self.index, value=self.symbol)
+			stat_list = StatList(self.parent, [load], self.symtab)
 		return self.parent.replace(self, stat_list)
-
-
-
 
 #EXPRESSIONS
 class Expr(IRNode):

@@ -261,8 +261,6 @@ def program() :
 	expect('period')
 	return the_program
 
-
-
 if __name__ == '__main__' :
 	from lexer import lexer, __test_program
 	the_lexer=lexer(__test_program)
