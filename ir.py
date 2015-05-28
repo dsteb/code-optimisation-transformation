@@ -197,6 +197,15 @@ class ArrayVar(IRNode):
 	def collect_uses(self):
 		return [self.symbol]
 
+	def lower(self):
+		dest = IRVar().name
+		load = LoadArrStat(symbol=dest, index=self.index, value=self.symbol)
+		stat_list = StatList(self.parent, [load], self.symtab)
+		return self.parent.replace(self, stat_list)
+
+
+
+
 #EXPRESSIONS
 class Expr(IRNode):
 	def getOperator(self):
@@ -419,6 +428,17 @@ class LoadStat(Stat):
 	def __init__(self, parent=None, symbol=None, value=None, symtab=None):
 		self.parent=parent
 		self.symbol=symbol
+		self.value=value
+		self.symtab=symtab
+
+	def collect_uses(self):
+		return []
+
+class LoadArrStat(Stat):
+	def __init__(self, parent=None, symbol=None, index=None, value=None, symtab=None):
+		self.parent=parent
+		self.symbol=symbol
+		self.index=index
 		self.value=value
 		self.symtab=symtab
 

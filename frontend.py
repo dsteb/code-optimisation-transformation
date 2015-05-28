@@ -148,15 +148,14 @@ def statement(symtab) :
 		target=symtab.find(value)
 		index=None
 		if accept('lsquare') :
-			expect('number')
-			index = value
+			expr = expression(symtab)
 			expect('rsquare')
 		expect('becomes')
 		expr=expression(symtab)
 		if index is None :
 			return AssignStat(target=target, expr=expr, symtab=symtab)
 		else :
-			return ArrayAssignStat(target=target, expr=expr, index=index, symtab=symtab)
+			return ArrayAssignStat(target=target, expr=expr, index=expr, symtab=symtab)
 	elif accept('callsym') :
 		expect('ident')
 		var = value
@@ -222,7 +221,6 @@ def block(symtab, local_vars=None) :
 		if accept('lsquare') :
 			expect('number')
 			local_vars.append(Symbol(name, ArrayType('array', value, 'Int')))
-			print local_vars
 			expect('rsquare')
 		else:
 			local_vars.append(Symbol(value, standard_types['int']))
