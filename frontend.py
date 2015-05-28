@@ -218,7 +218,14 @@ def block(symtab, local_vars=None) :
 		expect('semicolon');
 	if accept('varsym') :
 		expect('ident')
-		local_vars.append(Symbol(value, standard_types['int']))
+		name = value
+		if accept('lsquare') :
+			expect('number')
+			local_vars.append(Symbol(name, ArrayType('array', value, 'Int')))
+			print local_vars
+			expect('rsquare')
+		else:
+			local_vars.append(Symbol(value, standard_types['int']))
 		while accept('comma') :
 			expect('ident');
 			val = value;
