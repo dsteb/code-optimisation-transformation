@@ -390,6 +390,14 @@ class ArrayAssignStat(Stat):
 		try :	return self.expr.collect_uses()
 		except AttributeError : return []
 
+	def lower(self):
+		self.expr.lower()
+		source = self.expr.children[-1].symbol
+		stat = StoreArrStat(symbol=self.symbol, index=self.index, value=source)
+		children = self.expr.children + [stat]
+		stat_list = StatList(self.parent, children, self.symtab)
+		return self.parent.replace(self,stat_list)
+
 class BranchStat(Stat):
 	def __init__(self, parent=None, cond=None, target=None, symtab=None):
 		self.parent=parent
@@ -418,6 +426,17 @@ class StoreStat(Stat):
 	def __init__(self, parent=None, symbol=None, value=None, symtab=None):
 		self.parent=parent
 		self.symbol=symbol
+		self.value=value
+		self.symtab=symtab
+		
+	def collect_uses(self):
+		return [self.symbol]
+
+class StoreArrStat(Stat):
+	def __init__(self, parent=None, symbol=None, index=None, value=None, symtab=None):
+		self.parent=parent
+		self.symbol=symbol
+		self.index=index
 		self.value=value
 		self.symtab=symtab
 		

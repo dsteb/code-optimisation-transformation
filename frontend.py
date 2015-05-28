@@ -49,8 +49,7 @@ def factor(symtab) :
 		var=symtab.find(value)
 		if var.stype.name == 'array' :
 			expect('lsquare')
-			expect('number')
-			index=value
+			index=expression(symtab)
 			expect('rsquare')
 			return ArrayVar(var=var, index=index, symtab=symtab)
 		elif var.stype.name == 'function' :
@@ -148,14 +147,14 @@ def statement(symtab) :
 		target=symtab.find(value)
 		index=None
 		if accept('lsquare') :
-			expr = expression(symtab)
+			index = expression(symtab)
 			expect('rsquare')
 		expect('becomes')
 		expr=expression(symtab)
 		if index is None :
 			return AssignStat(target=target, expr=expr, symtab=symtab)
 		else :
-			return ArrayAssignStat(target=target, expr=expr, index=expr, symtab=symtab)
+			return ArrayAssignStat(target=target, expr=expr, index=index, symtab=symtab)
 	elif accept('callsym') :
 		expect('ident')
 		var = value
@@ -272,7 +271,6 @@ if __name__ == '__main__' :
 			
 	res.navigate(print_stat_list)
 	from support import *
-
 
 	node_list=get_node_list(res)
 	for n in node_list :
