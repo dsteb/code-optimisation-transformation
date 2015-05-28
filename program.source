@@ -1,5 +1,21 @@
-VAR a[5], b[3, c;
+VAR x, z, squ, v[5];
+
+PROCEDURE square(a);
+BEGIN
+  RETURN a * a;
+END;
+
+PROCEDURE exec;
+BEGIN
+  FOR (z := 1 + 2; z < 10; z := z + 1)
+  BEGIN
+    CALL square(x);
+    !squ;
+  END;
+END;
 
 BEGIN
-  a[3] := (a[1+2] * b[1]) / c + 1;
+  CALL exec;
+  v[7-3] := (v[1] + 1) / x + 3;
+  v[1] := square(5);
 END.

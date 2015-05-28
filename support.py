@@ -40,13 +40,9 @@ def lowering(node):
 	if (isinstance(node, ir.Block) or isinstance(node, ir.StatList) or
 			isinstance(node, ir.CallExpr) or isinstance(node, ir.LoadArrStat) or
 			isinstance(node, ir.DefinitionList) or isinstance(node, ir.FunctionDef) or
-			isinstance(node, ir.BinStat) or isinstance(node, ir.LoadStat)):
-		return
-
-	# implement
-	if (isinstance(node, ir.ReturnStat) or 
-		isinstance(node, ir.PrintStat) or isinstance(node, ir.CallStat)):
-		print 'lowering not yet implemented for ', type(node)
+			isinstance(node, ir.BinStat) or isinstance(node, ir.LoadStat) or
+			isinstance(node, ir.StoreArrStat) or isinstance(node, ir.ReturnStat) or
+			isinstance(node, ir.PrintStat) or isinstance(node, ir.CallStat)):
 		return
 
 	check=node.lower()

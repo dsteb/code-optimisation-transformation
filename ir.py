@@ -252,6 +252,10 @@ class UnExpr(Expr):
 	def getOperand(self):
 		return self.children[1]
 
+	# FIXME: why its need? it should be lowered to Stat
+	def getFunction(self):
+		return 'global'
+
 class CallExpr(Expr):
 	def __init__(self, parent=None, function=None, parameters=None, symtab=None):
 		self.parent=parent
@@ -261,6 +265,24 @@ class CallExpr(Expr):
 			for c in self.children:
 				if hasattr(c, 'parent'): c.parent = self
 		else : self.children=[]
+		self.symtab = symtab
+
+	def lower(self):
+		children = []
+		for i, c in enumerate(self.children):
+			if not isinstance(c, Const):
+				c.lower()
+				children += c
+				dest = c.children[-1].symbol
+				self.parameters[i] = dest
+		stat = CallStat(self, call_expr=self, symtab=self.symtab)
+		children += [stat]
+		stat_list = StatList(self.parent, children, self.symtab)
+		return self.parent.replace(self, stat_list)
+
+	# FIXME: why its need? it should be lowered to Stat
+	def getFunction(self):
+		return 'global'
 
 #STATEMENTS
 class Stat(IRNode):
@@ -277,7 +299,6 @@ class Stat(IRNode):
 			return self.parent
 		else :
 			return self.parent.getFunction()
-			
 
 class CallStat(Stat):	
 	'''Procedure call (non returning)'''
@@ -389,6 +410,7 @@ class ArrayAssignStat(Stat):
 		self.parent=parent
 		self.symbol=target
 		self.index=index
+		self.index.parent = self
 		self.expr=expr
 		self.expr.parent=self
 		self.symtab=symtab
@@ -399,9 +421,18 @@ class ArrayAssignStat(Stat):
 
 	def lower(self):
 		self.expr.lower()
-		source = self.expr.children[-1].symbol
-		stat = StoreArrStat(symbol=self.symbol, index=self.index, value=source)
-		children = self.expr.children + [stat]
+		if isinstance(self.expr.children[-1], Const):
+			source = self.expr.children[-1]
+		else:
+			source = self.expr.children[-1].symbol
+		children = self.expr.children
+		index = self.index
+		if not isinstance(index, Const):
+			index.lower()
+			index = self.index.children[-1].symbol
+			children += self.index.children
+		stat = StoreArrStat(symbol=self.symbol, index=index, value=source)
+		children += [stat]
 		stat_list = StatList(self.parent, children, self.symtab)
 		return self.parent.replace(self,stat_list)
 
