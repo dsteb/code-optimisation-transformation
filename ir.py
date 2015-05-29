@@ -575,11 +575,24 @@ class PrintStat(Stat):
 class ReturnStat(Stat):
 	def __init__(self, parent=None, return_expr=None, symtab=None):
 		self.parent=parent
-		self.return_expr=return_expr
+		return_expr.parent = self
+		self.children=[return_expr]
 		self.symtab=symtab
 
 	def collect_uses(self):
 		return []
+
+	def lower(self):
+		self.children[0].lower()
+		value = self.children[0].children[-1]
+		children = []
+		if not isinstance(value, Symbol):
+			pass
+		dest = IRVar().name
+		stat = LoadStat(symbol=dest, value=value)
+		children += [stat]
+		stat_list = StatList(self.parent, children, self.symtab)
+		return self.parent.replace(self, stat_list)
 
 #DEFINITIONS
 class Definition(IRNode):
