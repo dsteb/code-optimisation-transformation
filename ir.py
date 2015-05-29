@@ -587,7 +587,8 @@ class ReturnStat(Stat):
 		value = self.children[0].children[-1]
 		children = []
 		if not isinstance(value, Symbol):
-			pass
+			children += self.children[0].children
+			value = children[-1].symbol
 		dest = IRVar().name
 		stat = LoadStat(symbol=dest, value=value)
 		children += [stat]

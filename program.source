@@ -2,7 +2,7 @@ var b;
 
 PROCEDURE square(a);
 BEGIN
-  RETURN 5;
+  RETURN a * a;
 END;
 
 BEGIN
