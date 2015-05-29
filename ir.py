@@ -147,6 +147,7 @@ class IRNode(object):
 		if 'children' in dir(self) and len(self.children) and old in self.children:
 			self.children[self.children.index(old)]=new
 			return True
+
 		attrs = set(['body','cond', 'value','thenpart','elsepart', 'symbol', 'call', 'step', 'expr', 'target', 'defs', 'global_symtab', 'local_symtab', 'index' ]) & set(dir(self))
 		for d in attrs :
 			try :
@@ -269,13 +270,17 @@ class CallExpr(Expr):
 
 	def lower(self):
 		children = []
-		for i, c in enumerate(self.children):
-			if not isinstance(c, Const):
-				c.lower()
-				children += c
-				dest = c.children[-1].symbol
-				self.parameters[i] = dest
-		stat = CallStat(self, call_expr=self, symtab=self.symtab)
+		params = []
+		for i, param in enumerate(self.children):
+			param.lower()
+			param = self.children[i].children[-1]
+			if isinstance(param, Symbol):
+				params += [param]
+			else:
+				children += self.children[i].children
+				params += [self.children[i].children[-1].symbol]
+		expr = CallExpr(function=self.symbol, parameters=params, symtab=self.symtab)
+		stat = CallStat(call_expr=expr, symtab=self.symtab)
 		children += [stat]
 		stat_list = StatList(self.parent, children, self.symtab)
 		return self.parent.replace(self, stat_list)
@@ -305,7 +310,6 @@ class CallStat(Stat):
 	def __init__(self, parent=None, call_expr=None, symtab=None):
 		self.parent=parent
 		self.call=call_expr
-		self.call.parent=self
 		self.symtab=symtab
 	
 	def collect_uses(self):

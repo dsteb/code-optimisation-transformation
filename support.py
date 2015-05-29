@@ -38,7 +38,7 @@ def lowering(node):
 
 	# no need
 	if (isinstance(node, ir.Block) or isinstance(node, ir.StatList) or
-			isinstance(node, ir.CallExpr) or isinstance(node, ir.LoadArrStat) or
+			isinstance(node, ir.LoadArrStat) or
 			isinstance(node, ir.DefinitionList) or isinstance(node, ir.FunctionDef) or
 			isinstance(node, ir.BinStat) or isinstance(node, ir.LoadStat) or
 			isinstance(node, ir.StoreArrStat) or isinstance(node, ir.ReturnStat) or

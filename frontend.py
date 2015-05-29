@@ -164,8 +164,8 @@ def statement(symtab) :
 			while accept('comma') :
 				params.append(expression(symtab))
 			expect('rparen')
-			return CallStat(call_expr=CallExpr(function=symtab.find(var), parameters=params, symtab=symtab), symtab=symtab)
-		return CallStat(call_expr=CallExpr(function=symtab.find(value), symtab=symtab), symtab=symtab)
+			return CallExpr(function=symtab.find(var), parameters=params, symtab=symtab)
+		return CallExpr(function=symtab.find(value), symtab=symtab)
 	elif accept('beginsym') :
 		statement_list = StatList(symtab=symtab)
 		statement_list.append(statement(symtab))
@@ -236,9 +236,9 @@ def block(symtab, local_vars=None) :
 	while accept('procsym') :
 		expect('ident')
 		fname=value
+		new_local_vars = SymbolTable()
 		if accept('lparen') :
 			expect('ident');
-			new_local_vars = SymbolTable()
 			new_local_vars.append(Symbol(value, standard_types['int']))
 			while accept('comma') :
 				expect('ident');
