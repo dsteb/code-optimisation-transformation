@@ -76,7 +76,7 @@ class Symbol(object):
 	def __repr__(self):
 		if self.stype.name == 'array' :
 			return '{} {}[{}] {}'.format(self.stype.name, self.name, self.stype.size, type(self.value) if self.value else '')
-		return self.stype.name+' '+self.name + ( self.value if type(self.value)==str else '')
+		return self.stype.name+' '+str(self.name) + ( self.value if type(self.value)==str else '')
 
 	def collect_uses(self):
 		return []
@@ -241,8 +241,19 @@ class BinExpr(Expr):
 		right = self.children[2].children[-1] # last statement from StatList
 		op = self.children[0]
 		dest = IRVar().name
-		stat = BinStat(symbol=dest, left=left.symbol, right=right.symbol, op=op)
 		children = [] 
+		if isinstance(left, CallStat):
+			children += CallStat
+			callDest = IRVar().name
+			left = LoadStat(symbol=callDest)
+		else: left = left.symbol
+		if isinstance(right, CallStat):
+			children += CallStat
+			callDest = IRVar().name
+			right = LoadStat(symbol=callDest)
+		else: right = right.symbol
+		stat = BinStat(symbol=dest, left=left, right=right, op=op)
+		
 		if not isinstance(left, Symbol):
 			children += self.children[1].children
 		if not isinstance(right, Symbol):
@@ -274,6 +285,7 @@ class CallExpr(Expr):
 		children = []
 		params = []
 		for i, param in enumerate(self.children):
+			print self
 			param.lower()
 			param = self.children[i].children[-1]
 			if isinstance(param, Symbol):
@@ -281,7 +293,7 @@ class CallExpr(Expr):
 			else:
 				children += self.children[i].children
 				params += [self.children[i].children[-1].symbol]
-		expr = CallExpr(function=self.symbol, parameters=params, symtab=self.symtab)
+		expr = [self.symbol, params]
 		stat = CallStat(call_expr=expr, symtab=self.symtab)
 		children += [stat]
 		stat_list = StatList(self.parent, children, self.symtab)
@@ -315,7 +327,9 @@ class CallStat(Stat):
 		self.symtab=symtab
 	
 	def collect_uses(self):
-		return self.call.collect_uses() + self.symtab.exclude([standard_types['function'],standard_types['label']])
+		# FIXME: this code is broken
+		# return self.call.collect_uses() + self.symtab.exclude([standard_types['function'],standard_types['label']])
+		return self.symtab.exclude([standard_types['function'],standard_types['label']])
 
 class IfStat(Stat):
 	def __init__(self, parent=None, cond=None, thenpart=None, elsepart=None, symtab=None):
@@ -405,6 +419,10 @@ class AssignStat(Stat):
 
 	def lower(self):
 		self.expr.lower()
+		if isinstance(self.expr.children[-1], CallStat):
+			callDest = IRVar().name
+			ret = LoadStat(symbol=callDest)
+			self.expr.children += [ret]
 		source = self.expr.children[-1].symbol
 		stat = StoreStat(symbol=self.symbol, value=source)
 		children = self.expr.children + [stat]
@@ -427,10 +445,14 @@ class ArrayAssignStat(Stat):
 
 	def lower(self):
 		self.expr.lower()
+		
 		if isinstance(self.expr.children[-1], Const):
 			source = self.expr.children[-1]
-		else:
-			source = self.expr.children[-1].symbol
+		elif isinstance(self.expr.children[-1], CallStat):
+			callDest = IRVar().name
+			ret = LoadStat(symbol=callDest)
+			self.expr.children += [ret]
+		source = self.expr.children[-1].symbol
 		children = self.expr.children
 		index = self.index
 		if not isinstance(index, Const):
