@@ -1,5 +1,7 @@
 #!/usr/bin/python
 
+import support
+
 __doc__='''Intermediate Representation
 Could be improved by relying less on class hierarchy and more on string tags and/or duck typing
 Includes lowering and flattening functions'''
@@ -594,6 +596,10 @@ class FunctionDef(Definition):
 
 	def getGlobalSymbols(self):
 		return self.body.global_symtab.exclude([standard_types['function'],standard_types['label']])
+
+	def lower(self):
+		self.body.navigate(support.lowering)
+		return True
 
 class DefinitionList(IRNode):
 	def __init__(self,parent=None, children=None):
