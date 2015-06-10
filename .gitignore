@@ -1,4 +1,5 @@
 # own
+*.ps # dot graphics
 cfg.dot
 log.dot
 log

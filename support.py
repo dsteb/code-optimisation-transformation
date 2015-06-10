@@ -42,7 +42,7 @@ def lowering(node):
 			isinstance(node, ir.BinStat) or isinstance(node, ir.LoadStat) or
 			isinstance(node, ir.StoreArrStat) or isinstance(node, ir.StoreStat) or
 			isinstance(node, ir.PrintStat) or isinstance(node, ir.CallStat) or 
-			isinstance(node, ir.BranchStat) or isinstance(node, ir.UnExpr) or
+			isinstance(node, ir.BranchStat) or
 			isinstance(node, ir.EmptyStat)):
 		return
 

@@ -114,7 +114,7 @@ class IRNode(object):
 	
 	def __repr__(self):
 		from string import split, join
-		attrs = set(['body','cond', 'value','thenpart','elsepart', 'symbol', 'call', 'step', 'expr', 'target', 'defs', 'global_symtab', 'local_symtab', 'index', 'return_expr', 'dest', 'left', 'right', 'op' ]) & set(dir(self))
+		attrs = set(['body','cond', 'value','thenpart','elsepart', 'symbol', 'call', 'step', 'expr', 'target', 'defs', 'global_symtab', 'local_symtab', 'index', 'return_expr', 'dest', 'left', 'right', 'op', 'operand', 'operation' ]) & set(dir(self))
 
 		res=`type(self)`+' '+`id(self)`+' {\n'
 		try :
@@ -270,6 +270,7 @@ class UnExpr(Expr):
 	def getFunction(self):
 		return 'global'
 
+
 class CallExpr(Expr):
 	def __init__(self, parent=None, function=None, parameters=None, symtab=None):
 		self.parent=parent
@@ -372,10 +373,14 @@ class WhileStat(Stat):
 		exit_label = standard_types['label']()
 		exit_stat = EmptyStat(self.parent,symtab=self.symtab)
 		exit_stat.setLabel(exit_label)
-		branch = BranchStat(None,UnExpr(None,['not', self.cond]),exit_label,self.symtab)
-		branch.setLabel(entry_label)
+		self.cond.lower()
+		operand = self.cond.children[-1].symbol
+		unary_expr_target = IRVar().name
+		condition = UnStat(self.parent, unary_expr_target, operand, 'not')
+		branch = BranchStat(None,condition,exit_label,self.symtab)
+		self.cond.children[0].setLabel(entry_label)
 		loop = BranchStat(None,Const(None, 1),entry_label,self.symtab)
-		stat_list = StatList(self.parent, [branch,self.body,loop,exit_stat], self.symtab)
+		stat_list = StatList(self.parent, [self.cond, condition, branch,self.body,loop,exit_stat], self.symtab)
 		return self.parent.replace(self,stat_list)
 	
 class ForStat(Stat):
@@ -612,7 +617,7 @@ class ReturnStat(Stat):
 			children += self.children[0].children
 			value = children[-1].symbol
 		dest = IRVar().name
-		stat = LoadStat(symbol=dest, value=value)
+		stat = RetStat(self.parent, value)
 		children += [stat]
 		stat_list = StatList(self.parent, children, self.symtab)
 		return self.parent.replace(self, stat_list)
@@ -676,3 +681,18 @@ class BinStat(Stat):
 
 	def collect_uses(self):
 		return [self.symbol]
+
+class UnStat(Stat):
+	def __init__(self, parent=None, symbol=None, operand=None, operation=None):
+		self.parent=parent
+		self.symbol=symbol
+		self.operand=operand
+		self.operation = operation
+
+	def collect_uses(self):
+		return [self.symbol]
+
+class RetStat(Stat):
+	def __init__(self, parent=None, symbol=None):
+		self.parent=parent
+		self.symbol=symbol
